@@ -24,9 +24,10 @@ export PKG_CONFIG_LIBDIR="$deps/lib/pkgconfig"
 export PKG_CONFIG_PATH="$PKG_CONFIG_LIBDIR"
 export CFLAGS="${CFLAGS:--O2}"
 export LDFLAGS="${LDFLAGS:-}"
-host_args=()
+# Use an optional scalar: macOS Bash 3.2 rejects empty arrays with nounset.
+host_option=
 if [[ "$platform" == windows-* ]]; then
-    host_args=(--host=x86_64-w64-mingw32)
+    host_option=--host=x86_64-w64-mingw32
     export LDFLAGS="$LDFLAGS -static -static-libgcc"
 elif [[ "$platform" == macos-* ]]; then
     export MACOSX_DEPLOYMENT_TARGET=13.0
@@ -38,7 +39,7 @@ curl --fail --location --retry 3 -o libusb.tar.bz2 \
 tar -xjf libusb.tar.bz2
 (
     cd libusb-1.0.29
-    ./configure "${host_args[@]}" --prefix="$deps" --enable-static --disable-shared --disable-udev
+    ./configure ${host_option:+"$host_option"} --prefix="$deps" --enable-static --disable-shared --disable-udev
     make -j"$jobs"
     make install
 )
@@ -70,7 +71,7 @@ cd "$src"
 ./bootstrap
 mkdir -p "$work/openocd"
 cd "$work/openocd"
-"$src/configure" "${host_args[@]}" --prefix=/ --bindir=/bin --datarootdir=/share \
+"$src/configure" ${host_option:+"$host_option"} --prefix=/ --bindir=/bin --datarootdir=/share \
     --enable-internal-jimtcl --disable-internal-libjaylink \
     --enable-cmsis-dap --enable-cmsis-dap-v2 --enable-cmsis-dap-tcp \
     --without-capstone --disable-werror
