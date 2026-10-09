@@ -200,7 +200,7 @@ static int cmsis_dap_tcp_open(struct cmsis_dap *dap,
 			break; /* Success */
 		}
 
-		close(fd);
+		close_socket(fd);
 	}
 
 	freeaddrinfo(result);
