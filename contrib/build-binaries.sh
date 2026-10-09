@@ -28,6 +28,8 @@ export LDFLAGS="${LDFLAGS:-}"
 host_option=
 if [[ "$platform" == windows-* ]]; then
     host_option=--host=x86_64-w64-mingw32
+    # Keep the compiled install layout independent of MSYS's /bin -> /usr/bin mapping.
+    export MSYS2_ARG_CONV_EXCL="-DBINDIR=;-DPKGDATADIR=${MSYS2_ARG_CONV_EXCL:+;$MSYS2_ARG_CONV_EXCL}"
     export LDFLAGS="$LDFLAGS -static -static-libgcc"
 elif [[ "$platform" == macos-* ]]; then
     export MACOSX_DEPLOYMENT_TARGET=13.0
