@@ -30,6 +30,9 @@ jobs:
       run:
         shell: bash
     steps:
+      - name: Preserve Unix line endings on Windows
+        if: runner.os == 'Windows'
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
