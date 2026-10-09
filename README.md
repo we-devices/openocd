@@ -1,5 +1,8 @@
 # Welcome to OpenOCD
 
+This fork provides [Windows, Linux, and macOS binary archives with CMSIS-DAP
+TCP support](README.binaries.md), built by GitHub Actions.
+
 OpenOCD provides on-chip programming and debugging support with a
 layered architecture of JTAG interface and TAP support including:
 

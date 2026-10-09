@@ -1,6 +1,8 @@
 # stuff "git status" should ignore
 
 # build output
+/.binary-build/
+/dist/
 .libs
 .deps
 .dirstamp
