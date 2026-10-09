@@ -56,6 +56,11 @@ cmake --install hidapi-build
 
 # Preserve private link flags (pthread, Windows libraries, macOS frameworks).
 LIBUSB1_LIBS=$(pkg-config --static --libs libusb-1.0)
+if [[ "$platform" == macos-* ]]; then
+    # Libtool drops libusb's -Wl,-framework flags from static dependencies.
+    # Use its native framework syntax, including the required Security framework.
+    LIBUSB1_LIBS=${LIBUSB1_LIBS//-Wl,-framework,/-framework }
+fi
 export LIBUSB1_LIBS
 hidapi=hidapi
 if [[ "$platform" == linux-* ]]; then hidapi='hidapi-libusb'; fi
